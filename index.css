@@ -1,0 +1,495 @@
+/* Business-card home page + header styling (updated) */
+
+:root{
+  --bg1:#0f1724; --bg2:#0b1220;
+  --card:#0f1728aa; --glass:rgba(255,255,255,0.06);
+  --accent:#ff6b5c; --accent2:#ff8a3d;
+  --text:#eef2f7; --muted:rgba(238,242,247,0.72);
+
+  /* hero / effect colors */
+  --hero-a: #18b6a3;
+  --hero-b: #37d5b0;
+  --hero-c: rgba(255,255,255,0.06);
+  --effect-glow: 0 12px 40px rgba(25, 200, 170, 0.12);
+  --transition-speed: 320ms;
+
+  /* --- Cyberpunk: high-impact overrides & additions --- */
+  --neon-1: #ff3fa8;
+  --neon-2: #39d3ff;
+  --neon-3: #9b59ff;
+  --bg-deep: #07020b;
+  --panel: rgba(10,8,16,0.55);
+  --glass-border: rgba(255,255,255,0.06);
+  --muted: rgba(255,255,255,0.6);
+  --transition-fast: 220ms;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, Poppins, system-ui, sans-serif;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* allow vertical scrolling only on the home page */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* no horizontal scroll */
+    overflow-y: auto;   /* allow up/down scrolling */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Header (fixed top-left, mobile centers) */
+header{
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:999;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:8px 12px;
+  background:linear-gradient(90deg, rgba(18,8,45,0.65), rgba(30,6,40,0.45));
+  border: 1px solid rgba(255,80,140,0.12);
+  box-shadow: 0 6px 30px rgba(255,80,140,0.08), 0 0 30px rgba(25,200,170,0.04) inset;
+  color: #eaf6ff;
+  text-shadow: 0 2px 8px rgba(255,80,140,0.08);
+  border-radius: 12px;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+  pointer-events: auto;
+}
+header a{color:var(--accent2);text-decoration:none;font-weight:600;padding:6px 8px;border-radius:8px;transition:background .25s,transform .25s}
+header a:hover{background:rgba(255,255,255,0.04);transform:translateY(-2px)}
+@media (max-width:640px){
+  header{left:50%;transform:translateX(-50%);top:10px;padding:6px 10px}
+}
+
+/* phone contact link */
+.contact-phone{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:10px;
+  color:#fff;
+  background: linear-gradient(90deg, rgba(255,65,140,0.12), rgba(56,180,255,0.06));
+  border: 1px solid rgba(255,65,140,0.16);
+  box-shadow: 0 8px 22px rgba(255,65,140,0.08);
+  font-weight:700;
+  text-decoration:none;
+  transform: translateZ(0);
+}
+.contact-phone:hover{
+  box-shadow: 0 16px 48px rgba(255,65,140,0.18), 0 0 24px rgba(56,180,255,0.06);
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* Card layout */
+.wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px}
+.card{
+  width:100%;max-width:980px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  border-radius:16px;padding:28px;display:grid;grid-template-columns:120px 1fr;gap:20px;align-items:center;
+  box-shadow:0 10px 40px rgba(2,6,23,0.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.04);
+  position:relative;overflow:hidden;
+  animation: pageLoad 600ms cubic-bezier(.2,.9,.2,1) 120ms both;
+  will-change: transform, opacity;
+}
+
+/* ensure wrapper adapts and doesn't force horizontal scroll */
+.wrap, .card {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* hero-effect: decorative shapes that mimic the teal hero feel without using a background image */
+.hero-effect{
+  position:absolute;
+  right:0;
+  top:0;
+  width:48%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  pointer-events:none;
+  z-index:1;
+  transform:translateX(8%);
+  opacity: 0;
+  animation: heroFadeIn 900ms cubic-bezier(.2,.9,.2,1) 260ms both;
+}
+
+/* soft glowing circle */
+.hero-circle{
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, var(--hero-a), var(--hero-b) 60%, transparent 70%);
+  filter: blur(14px);
+  opacity:0.95;
+  box-shadow: var(--effect-glow);
+  transform: translateY(0);
+  animation: floatUp 6s ease-in-out infinite;
+}
+
+/* phone mock (simple rectangle with inner screen) */
+.phone-mock{
+  width:96px;
+  height:180px;
+  border-radius:20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border: 2px solid rgba(255,255,255,0.04);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 6px 30px rgba(0,0,0,0.35);
+  transform:translateY(6px);
+  animation: bob 4.2s ease-in-out infinite;
+}
+
+/* inner screen with gradient to echo the hero colors */
+.phone-screen{
+  width:76%;
+  height:82%;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(24,182,163,0.95), rgba(55,213,176,0.95));
+  box-shadow: inset 0 -8px 20px rgba(0,0,0,0.12);
+}
+
+/* decorative small dots */
+.hero-dots{display:flex;flex-direction:column;gap:8px;opacity:0.9}
+.hero-dots span{
+  display:block;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.18);
+  box-shadow:0 6px 18px rgba(0,0,0,0.35);
+  transform:translateX(0);
+  animation: dotsMove 3.6s linear infinite;
+}
+.hero-dots span:nth-child(2){width:10px;height:10px;animation-delay:0.4s}
+.hero-dots span:nth-child(3){width:6px;height:6px;animation-delay:0.9s}
+
+/* ensure content sits above the effect */
+.info, .avatar { position:relative; z-index:2; }
+
+/* Avatar */
+.avatar{
+  width:120px;height:120px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.6rem;box-shadow:0 8px 24px rgba(255,107,92,0.12);
+  opacity: 0;
+  transform: translateY(6px) scale(.98);
+  animation: avatarPop 520ms cubic-bezier(.25,.8,.25,1) 360ms both;
+}
+
+/* Info content */
+.info h1{margin:0;font-size:1.6rem;letter-spacing:0.2px}
+.role{margin:6px 0;color:var(--muted);font-weight:600}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.link{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:var(--glass);
+  color:var(--text);text-decoration:none;font-weight:600;border:1px solid rgba(255,255,255,0.03)
+}
+.link:hover{filter:brightness(1.05);transform:translateY(-2px)}
+.btn-primary{margin-left:auto;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;padding:10px 16px;border-radius:10px;border:none;text-decoration:none;font-weight:700}
+.muted{color:var(--muted);margin-top:8px;font-size:0.95rem}
+
+/* Animations */
+/* Page load intro animations for the business-card home */
+.card {
+  /* keep existing rules... */
+  animation: pageLoad 600ms cubic-bezier(.2,.9,.2,1) 120ms both;
+  will-change: transform, opacity;
+}
+
+/* hero effect fades in slightly after card */
+.hero-effect {
+  opacity: 0;
+  transform: translateX(12%);
+  animation: heroFadeIn 900ms cubic-bezier(.2,.9,.2,1) 260ms both;
+}
+
+/* avatar pop */
+.avatar {
+  /* existing rules... */
+  opacity: 0;
+  transform: translateY(6px) scale(.98);
+  animation: avatarPop 520ms cubic-bezier(.25,.8,.25,1) 360ms both;
+}
+
+/* heading and role */
+.info h1 {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: textIn 560ms ease 420ms both;
+}
+.role {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: textIn 560ms ease 500ms both;
+}
+
+/* links stagger */
+.links a {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: linkIn 420ms ease both;
+}
+.links a:nth-child(1) { animation-delay: 640ms; }
+.links a:nth-child(2) { animation-delay: 720ms; }
+.links .btn-primary  { animation-delay: 800ms; }
+
+/* small hover protection while animating */
+.links a, .btn-primary { will-change: transform, opacity; }
+
+/* Keyframes */
+@keyframes pageLoad {
+  from { opacity: 0; transform: translateY(6px) scale(.996); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateX(18%) scale(.99); }
+  to   { opacity: 1; transform: translateX(8%) scale(1); }
+}
+@keyframes avatarPop {
+  0%   { opacity: 0; transform: translateY(10px) scale(.92); }
+  60%  { transform: translateY(-6px) scale(1.04); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes textIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes linkIn {
+  from { opacity: 0; transform: translateY(8px) scale(.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Responsive */
+@media (max-width:840px){
+  .hero-effect{display:none}
+  .card{grid-template-columns:120px 1fr}
+}
+@media (max-width:640px){
+  .card{grid-template-columns:1fr;text-align:center;padding:20px}
+  .btn-primary{margin-left:0}
+}
+
+/* While page initial animation runs: hide main content but keep header visible */
+.is-loading main,
+.is-loading .card,
+.is-loading .hero-effect,
+.is-loading .info,
+.is-loading .links,
+.is-loading .muted,
+.is-loading .projects-box,
+.is-loading .description-box {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px);
+}
+
+/* Keep header definitely visible and interactive while loading */
+header {
+    position: fixed; /* already set, but ensure precedence */
+    z-index: 9999;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* small transition so reveal is smooth */
+.card,
+.hero-effect,
+.info,
+.links,
+.muted,
+.projects-box,
+.description-box {
+    transition: opacity 280ms ease, transform 300ms ease, visibility 1ms linear;
+}
+
+/* --- Cyberpunk: high-impact overrides & additions --- */
+:root{
+  --neon-1: #ff3fa8;
+  --neon-2: #39d3ff;
+  --neon-3: #9b59ff;
+  --bg-deep: #07020b;
+  --panel: rgba(10,8,16,0.55);
+  --glass-border: rgba(255,255,255,0.06);
+  --muted: rgba(255,255,255,0.6);
+  --transition-fast: 220ms;
+}
+
+/* stronger base, deeper contrast for neon pop */
+html,body{
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(57,211,255,0.06), transparent 8%),
+              radial-gradient(900px 450px at 90% 80%, rgba(155,89,255,0.04), transparent 10%),
+              linear-gradient(180deg,#04040a 0%, #0b0710 100%);
+  color: #e6eef8;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* glassy header with neon rim */
+header{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  position:fixed;
+  left:16px;
+  top:16px;
+  z-index:999;
+  padding:10px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 6px 30px rgba(57,211,255,0.03), 0 0 32px rgba(255,63,168,0.03) inset;
+  border-radius:14px;
+  backdrop-filter: blur(10px) saturate(120%);
+  transition: transform var(--transition-fast), box-shadow 280ms;
+}
+
+/* neon accent for header anchor text */
+header a{
+  color: #dff7ff;
+  font-weight:700;
+  padding:6px 10px;
+  border-radius:10px;
+  text-decoration:none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+/* neon hover aura */
+header a:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 18px 48px rgba(57,211,255,0.12), 0 0 28px rgba(255,63,168,0.12);
+  text-shadow: 0 6px 28px rgba(155,89,255,0.18);
+}
+
+/* phone link with clear neon badge */
+.contact-phone{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:6px 12px;
+  background: linear-gradient(90deg, rgba(57,211,255,0.06), rgba(255,63,168,0.04));
+  border: 1px solid rgba(255,63,168,0.14);
+  color: #fff;
+  font-weight:800;
+  border-radius:12px;
+  box-shadow: 0 10px 30px rgba(255,63,168,0.06);
+}
+
+/* subtle pulse to draw attention (very light) */
+.contact-phone::after{
+  content: "";
+  position:absolute;
+  pointer-events:none;
+  left:-6px; right:-6px; top:-6px; bottom:-6px;
+  border-radius:16px;
+  box-shadow: 0 0 36px rgba(57,211,255,0.03);
+  opacity:0;
+  transition:opacity 400ms;
+}
+.contact-phone:hover::after{ opacity:1; }
+
+/* Main card upgrade: deeper glass, neon rim, stronger micro-animations */
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 18px 60px rgba(6,6,12,0.65), 0 0 48px rgba(155,89,255,0.03) inset;
+  border-radius:22px;
+  padding:28px;
+  transform-origin:center;
+  transition: transform 360ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms;
+}
+
+/* hover lifts and brighter rim */
+.card:hover{
+  transform: translateY(-6px) scale(1.006);
+  box-shadow: 0 36px 120px rgba(6,6,12,0.7), 0 0 56px rgba(255,63,168,0.06);
+}
+
+/* avatar neon badge */
+.avatar{
+  background: linear-gradient(135deg, rgba(57,211,255,0.12), rgba(155,89,255,0.08));
+  color: #fff;
+  font-weight:900;
+  border-radius:12px;
+  padding:20px 22px;
+  font-size:1.25rem;
+  letter-spacing:1px;
+  box-shadow: 0 12px 36px rgba(155,89,255,0.06), 0 0 26px rgba(57,211,255,0.04);
+}
+
+/* links and primary button — stronger neon gradient */
+.btn-primary{
+  background: linear-gradient(90deg, var(--neon-1), var(--neon-2));
+  color: #0b0410;
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow: 0 8px 36px rgba(255,63,168,0.12);
+  transition: transform var(--transition-fast), box-shadow 260ms;
+}
+.btn-primary:hover{
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 80px rgba(57,211,255,0.14), 0 0 36px rgba(255,63,168,0.16);
+}
+
+/* subtle animated glow behind hero effect */
+.hero-effect::before{
+  content:'';
+  position:absolute;
+  left:-40px; top:-80px;
+  width:420px; height:220px;
+  background: radial-gradient(circle at 30% 30%, rgba(57,211,255,0.08), transparent 25%),
+              radial-gradient(circle at 70% 70%, rgba(155,89,255,0.06), transparent 25%);
+  filter: blur(28px);
+  z-index:1;
+  pointer-events:none;
+  animation: slowFloat 8s ease-in-out infinite;
+}
+
+/* bubbles & subtle motion */
+.bubble{
+  background: linear-gradient(135deg, rgba(255,63,168,0.16), rgba(57,211,255,0.12));
+  border-radius:50%;
+  box-shadow: 0 8px 40px rgba(57,211,255,0.04);
+  opacity:0.95;
+  transition: transform 500ms;
+}
+.bubble:hover{ transform: translateY(-6px) scale(1.03); }
+
+/* platform/download button improvement */
+.download-btn{
+  display:inline-block;
+  padding:10px 14px;
+  border-radius:12px;
+  color:#0b0410;
+  background: linear-gradient(90deg,var(--neon-2),var(--neon-1));
+  border: 1px solid rgba(255,255,255,0.06);
+  font-weight:800;
+  text-decoration:none;
+  box-shadow: 0 12px 44px rgba(155,89,255,0.08);
+  transition: transform 240ms, box-shadow 260ms;
+}
+.download-btn:hover{ transform: translateY(-4px); box-shadow: 0 28px 96px rgba(255,63,168,0.12); }
+
+/* platform intro animation stronger */
+@keyframes slowFloat { 0%,100%{ transform:translateY(0) } 50%{ transform: translateY(-8px) } }
+
+/* make header compact on small screens */
+@media (max-width:640px){
+  header{ left:50%; transform:translateX(-50%); top:12px; padding:8px; }
+  .card{ padding:18px; border-radius:16px; }
+  .avatar{ padding:14px 16px; }
+}
+
+/* keep loading-hidden rules working but preserve glassy header */
+.is-loading main,
+.is-loading .Animation,
+.is-loading .platform,
+.is-loading .projects-box,
+.is-loading .description-box{
+  opacity:0; transform: translateY(8px); pointer-events:none;
+  transition: opacity 420ms, transform 420ms;
+}

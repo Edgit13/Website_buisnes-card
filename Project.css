@@ -1,0 +1,549 @@
+/* Base styles */
+:root {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --accent-color-1: #ff416c; /* Bright pink */
+    --accent-color-2: #ff4b2b; /* Bright orange */
+    --glow-color: rgba(255, 75, 43, 0.8);
+    --transition-speed: 0.3s;
+
+  --neon-1: #ff3fa8;
+  --neon-2: #39d3ff;
+  --panel-dark: rgba(4,3,8,0.6);
+  --glass: rgba(255,255,255,0.04);
+  --muted: rgba(230,238,248,0.7);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+
+    /* prevent horizontal scroll, allow vertical scroll */
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* make sure content doesn't collide with viewport edge */
+main {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 20px;
+    /* allow contained vertical scrolling if needed */
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+/* Safety: ensure large elements don't force horizontal scroll */
+*,
+*:before,
+*:after { box-sizing: border-box; }
+img, .card, .projects-box, .description-box {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Main animation container */
+.Animation {
+    text-align: center;
+    padding-top: 6vh;
+    animation: fadeIn 2s ease-in-out, fadeOutTrigger 7s forwards;
+    position: relative;
+}
+
+.Animation h1 {
+    font-size: clamp(2.5em, 6vw, 5em); /* Responsive font sizing */
+    margin: 0.2em 0;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    animation: slideUp 1s ease forwards;
+    opacity: 0;
+}
+
+.Animation h2 {
+    font-size: clamp(1.5em, 3vw, 2.5em);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    animation: slideUp 1s ease 0.25s forwards;
+    opacity: 0;
+}
+
+/* Special effects container - Polished version */
+.spec_effect {
+    position: relative;
+    margin: 60px auto;
+    width: clamp(250px, 40vw, 400px); /* Responsive sizing */
+    height: clamp(120px, 20vw, 200px);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 25px;
+    overflow: hidden;
+    animation: fadeOutTrigger 7s forwards;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.border_effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+    animation: pulseBorder 3s infinite ease-in-out;
+}
+
+.bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.05), transparent);
+    transform: translateX(-40%);
+    animation: shimmer 4s infinite linear;
+}
+
+/* Bubbles and specks */
+.bubble {
+    position: absolute;
+    bottom: -10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: floatUp 6s infinite ease-in-out, fadeOutTrigger 7s forwards;
+    filter: blur(1px); /* Subtly blurs the bubbles */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Adds a faint glow */
+    transform-origin: 50% 50%;
+}
+
+.bubble:nth-child(1) { left: 10%; width: 30px; height: 30px; animation-delay: 0s; }
+.bubble:nth-child(2) { left: 40%; width: 20px; height: 20px; animation-delay: 1s; }
+.bubble:nth-child(3) { left: 70%; width: 40px; height: 40px; animation-delay: 2s; }
+.bubble:nth-child(4) { left: 25%; width: 25px; height: 25px; animation-delay: 3s; }
+.bubble:nth-child(5) { left: 85%; width: 35px; height: 35px; animation-delay: 1.5s; }
+.bubble:nth-child(6) { left: 55%; width: 15px; height: 15px; animation-delay: 2.5s; }
+
+.effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 70%);
+    animation: pulseGlow 5s infinite ease-in-out, fadeOutTrigger 7s forwards;
+}
+
+/* Platform section */
+.platform {
+    text-align: center;
+    margin-top: 18px;
+    opacity: 0;
+    animation: fadeInPlatform 2s ease-in-out 7s forwards;
+}
+
+.platform h3 {
+    font-size: clamp(1.5em, 3vw, 2.5em);
+    margin-bottom: 30px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 18px 40px;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 0 15px var(--glow-color);
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.download-btn:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 10px 30px var(--glow-color);
+}
+
+/* Description Box Styling */
+.description-box {
+    width: clamp(280px, 60vw, 700px);
+    margin: 18px auto 0;
+    position: relative;
+    z-index: 2;              /* keep box above animated background */
+    margin-bottom: 24px;    /* small space from viewport bottom */
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInPlatform 2s ease-in-out 7.5s forwards;
+    /* prevent page scroll while keeping box content accessible */
+    max-height: 22vh;
+    overflow: auto;
+}
+
+/* Feedback header - fixed top-left */
+header {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 999;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+
+    color: var(--text-color);
+    font-size: 0.95rem;
+    pointer-events: auto;
+}
+
+/* Cyberpunk neon header improvements (Project page) */
+header{
+    background: linear-gradient(90deg, rgba(8,6,25,0.7), rgba(28,8,40,0.45));
+    border: 1px solid rgba(255,75,43,0.12);
+    box-shadow: 0 8px 28px rgba(255,75,43,0.06), 0 0 20px rgba(255,75,43,0.03) inset;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+/* Home link in header */
+header .home-link{
+    margin-left:8px;
+    padding:6px 10px;
+    background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2));
+    color:#fff;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:700;
+    box-shadow:0 6px 18px var(--glow-color);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+header .home-link:hover{
+    transform: translateY(-2px);
+    box-shadow:0 10px 28px var(--glow-color);
+}
+
+/* Tweak link appearance inside header */
+header a {
+    color: var(--accent-color-2);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+header a:hover,
+header a:focus {
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    transform: translateY(-2px);
+}
+
+/* phone contact link */
+.contact-phone{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 10px;
+    border-radius:8px;
+    color:#fff;
+    background: linear-gradient(90deg, rgba(255,65,140,0.12), rgba(255,160,80,0.06));
+    border: 1px solid rgba(255,65,140,0.14);
+    box-shadow: 0 8px 24px rgba(255,75,43,0.06);
+    text-decoration:none;
+    font-weight:700;
+}
+.contact-phone:hover{
+    box-shadow: 0 14px 44px rgba(255,75,43,0.14);
+    transform: translateY(-2px);
+}
+
+/* Projects box (list of .pptx) */
+.projects-box {
+    width: clamp(300px, 70vw, 900px);
+    margin: 18px auto 0;
+    padding: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    position: relative;
+    z-index: 2;
+}
+
+.projects-box h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.25rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.project-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.project-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.18);
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.project-name {
+    color: rgba(255,255,255,0.95);
+    font-weight: 600;
+    font-size: 0.98rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 58%;
+}
+
+/* reuse existing .download-btn look, tweak for actions */
+.project-actions { display: flex; gap: 8px; align-items: center; }
+.project-actions .download-btn { padding: 8px 14px; font-size: 0.95rem; border-radius: 12px; }
+
+/* small responsive tweak */
+@media (max-width: 640px) {
+    .project-name { max-width: 48%; font-size: 0.92rem; }
+    .projects-box { padding: 12px; }
+}
+
+/* Make header more compact on very small screens: center at top */
+@media (max-width: 520px) {
+    header {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 10px;
+        padding: 6px 10px;
+        gap: 8px;
+        font-size: 0.9rem;
+    }
+}
+
+/* --- Cyberpunk: Project page refined overrides --- */
+:root{
+  --neon-1: #ff3fa8;
+  --neon-2: #39d3ff;
+  --panel-dark: rgba(4,3,8,0.6);
+  --glass: rgba(255,255,255,0.04);
+  --muted: rgba(230,238,248,0.7);
+}
+
+/* deeper page backdrop for cinematic feel */
+body{
+  background:
+    radial-gradient(800px 420px at 15% 20%, rgba(57,211,255,0.05), transparent 6%),
+    radial-gradient(900px 500px at 85% 80%, rgba(155,89,255,0.03), transparent 8%),
+    linear-gradient(180deg,#04030a,#070412);
+  color:#eaf4ff;
+}
+
+/* header glass/neon */
+header{
+  position:fixed;
+  left:14px; top:14px; z-index:999;
+  padding:10px 12px;
+  border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));
+  border: 1px solid var(--glass);
+  box-shadow: 0 10px 40px rgba(155,89,255,0.04), 0 0 26px rgba(57,211,255,0.02) inset;
+  backdrop-filter: blur(10px) saturate(120%);
+  transition: box-shadow 260ms, transform 260ms;
+}
+
+/* home link styled as small neon pill */
+header .home-link{
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:10px;
+  background: linear-gradient(90deg,var(--neon-2),var(--neon-1));
+  color:#0b0410;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow: 0 12px 48px rgba(255,63,168,0.08);
+  transition: transform 200ms;
+}
+header .home-link:hover{ transform: translateY(-4px); }
+
+/* phone contact more prominent */
+.contact-phone{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 12px;
+  border-radius:10px;
+  background: linear-gradient(90deg, rgba(255,63,168,0.06), rgba(57,211,255,0.06));
+  border: 1px solid rgba(255,63,168,0.12);
+  color:#fff;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow: 0 10px 36px rgba(255,63,168,0.06);
+}
+
+/* Animation container: amplify intro shimmer */
+.Animation{
+  padding:40px;
+  border-radius:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 40px 100px rgba(3,2,8,0.75), 0 0 60px rgba(155,89,255,0.03) inset;
+  transform-origin:center;
+  animation: introPop 700ms cubic-bezier(.2,.9,.3,1) both;
+}
+
+/* stronger heading neon glow */
+.Animation h1, .Animation h2{
+  text-shadow: 0 12px 40px rgba(255,63,168,0.12), 0 0 32px rgba(57,211,255,0.06);
+}
+
+/* spec effect: crisp neon border + animated shimmer */
+.spec_effect{
+  position:relative;
+  display:inline-block;
+  padding:12px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.004));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 18px 48px rgba(155,89,255,0.04);
+  overflow:hidden;
+}
+.spec_effect .border_effect{
+  position:absolute; inset:0; pointer-events:none;
+  box-shadow: 0 0 32px rgba(255,63,168,0.08);
+  border-radius:12px;
+}
+.spec_effect .bg{
+  position:absolute; inset:0; background: linear-gradient(135deg, rgba(57,211,255,0.02), rgba(155,89,255,0.02));
+  opacity:0.9; filter: blur(12px); transform: scale(1.15);
+}
+
+/* effect ring */
+.effect{
+  position:absolute;
+  inset:auto 18% 6% 18%;
+  height:8px;
+  border-radius:999px;
+  background: linear-gradient(90deg, rgba(255,63,168,0.14), rgba(57,211,255,0.12));
+  filter: blur(10px);
+  animation: ringPulse 1600ms infinite ease-in-out;
+}
+
+/* bubble motion */
+@keyframes introPop { 0% { transform: translateY(18px) scale(.98); opacity:0 } 100% { transform:none; opacity:1 } }
+@keyframes ringPulse { 0%,100% { transform: scaleX(.96); opacity:.85 } 50% { transform: scaleX(1.06); opacity:1 } }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseBorder {
+    0%   { box-shadow: 0 0 20px rgba(255,255,255,0.12); transform: scale(1); }
+    50%  { box-shadow: 0 0 42px rgba(255,255,255,0.22); transform: scale(1.01); }
+    100% { box-shadow: 0 0 20px rgba(255,255,255,0.12); transform: scale(1); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-40%); opacity: 0.9; }
+    50% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(40%); opacity: 0.9; }
+}
+
+@keyframes floatUp {
+    0%   { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.6; }
+    50%  { transform: translateY(-30vh) scale(1.15) rotate(18deg); opacity: 0.9; }
+    100% { transform: translateY(-60vh) scale(0.9) rotate(-18deg); opacity: 0; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.1); }
+}
+
+@keyframes fadeOutTrigger {
+    0%   { opacity: 1; pointer-events: auto; }
+    70%  { opacity: 1; pointer-events: auto; }
+    100% { opacity: 0; pointer-events: none; }
+}
+
+@keyframes fadeInPlatform {
+    from { opacity: 0; transform: translateY(36px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* hide main content while intro animation runs, keep header visible */
+.is-loading main,
+.is-loading .Animation,
+.is-loading .platform,
+.is-loading .projects-box,
+.is-loading .description-box {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px);
+}
+
+/* Hide project UI while the intro animation runs, keep header visible.
+   This only hides project-related boxes during the "is-loading" state. */
+.is-loading .projects-box,
+.is-loading .description-box,
+.is-loading .platform,
+.is-loading .project-list,
+.is-loading .project-item {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(0) !important;
+}
+
+/* Smooth reveal after loading finishes */
+.projects-box,
+.description-box,
+.platform {
+    transition: opacity 320ms ease, transform 320ms ease, visibility 0s linear 320ms;
+    will-change: opacity, transform;
+}
+
+/* Ensure header remains visible/interactive during loading */
+.is-loading header {
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 9999;
+}
