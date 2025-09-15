@@ -1,0 +1,383 @@
+/* --- Base styles (основні змінні та стилі для всього сайту) --- */
+
+:root {
+  --bg1: #0f1724;
+  --bg2: #0b1220;
+  --card: #0f1726;
+  --muted: #98a0b3;
+  --accent: #5eead4;
+  --accent-2: #60a5fa;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-2: rgba(255, 255, 255, 0.02);
+  --radius: 14px;
+  --fg: #e6eef8;
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  --focus: 3px solid rgba(96, 165, 250, 0.18);
+  --header-bg: rgba(255, 255, 255, 0.04);
+  --header-bg-scrolled: rgba(100, 149, 237, 0.2);
+  --header-border: rgba(255, 255, 255, 0.03);
+  --header-border-scrolled: rgba(100, 149, 237, 0.3);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  cursor: none !important; /* Приховуємо стандартний курсор на всьому тілі документа */
+}
+
+/* Приховуємо стандартний курсор на інтерактивних елементах */
+a, button, .link, .download-btn {
+  cursor: none !important;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--bg1) 0%, #071026 55%, #02111a 100%);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  gap: 24px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  cursor: none !important;
+}
+
+/* --- Анімація завантаження --- */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    z-index: 9999;
+}
+
+.loader {
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid var(--accent);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    cursor: none !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+body.loaded #loading-overlay {
+    opacity: 0;
+    visibility: hidden;
+    cursor: none !important;
+}
+
+/* --- Стилі для кастомного курсора --- */
+.cursor-dot, .cursor-outline {
+    position: fixed;
+    top: 0; left: 0;
+    width: 10px; height: 10px; border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%,-50%);
+    z-index: 99999;
+    mix-blend-mode: normal;
+}
+.cursor-dot {
+    background: rgba(96,165,250,1);
+    box-shadow: 0 8px 24px rgba(96,165,250,0.18);
+    transition: transform 160ms ease-out;
+    z-index: 100000;
+}
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(96,165,250,0.14);
+    background: transparent;
+    box-shadow: 0 6px 20px rgba(96,165,250,0.04);
+    transition: transform 160ms ease-out;
+}
+a:hover ~ .cursor-outline,
+button:hover ~ .cursor-outline,
+.download-btn:hover ~ .cursor-outline,
+.header-content a:hover ~ .cursor-outline {
+    transform: translate(-50%,-50%) scale(1.5);
+    border-color: rgba(96,165,250,0.22);
+}
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+    html, body { cursor: auto !important; }
+    .cursor-dot, .cursor-outline { display: none !important; }
+}
+
+/* --- Header styles (загальні стилі для навігації) --- */
+header {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: auto;
+  z-index: 40;
+  transition: all 0.8s ease;
+  background: transparent;
+  backdrop-filter: blur(6px) saturate(110%);
+  cursor: none !important;
+}
+
+.header-content {
+  background: var(--header-bg);
+  border: 1px solid var(--header-border);
+  backdrop-filter: blur(6px) saturate(110%);
+  padding: 8px 12px;
+  border-radius: 999px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+  box-shadow: 0 6px 20px rgba(2, 6, 23, 0.45);
+  transition: all 0.8s ease;
+  cursor: none !important; 
+}
+
+.scrolled .header-content {
+  background: var(--header-bg-scrolled);
+  border-color: var(--header-border-scrolled);
+}
+
+.header-content a {
+  color: var(--fg);
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: all .18s ease;
+  font-weight: 600;
+  background: transparent;
+  cursor: none !important;
+}
+
+.header-content a:hover {
+  background: var(--glass-2);
+  color: var(--accent-2);
+  cursor: none !important;
+}
+
+/* --- Main content & layout (Виправлено Flexbox) --- */
+
+main {
+  width: 100%;
+  max-width: 980px;
+  margin: auto;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  min-height: calc(100vh - 64px);
+  padding-top: 64px;
+  cursor: none !important;
+}
+
+/* --- Project-specific blocks (уніфіковано для Project.html) --- */
+
+.platform, .description-box {
+  width: 100%;
+  max-width: 700px;
+  padding: 26px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: var(--shadow);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  cursor: none !important;
+}
+
+/* Анімація плавного з'явлення */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.platform {
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+    cursor: none !important;
+}
+
+.description-box {
+    animation: fadeInSlideUp 0.8s ease-out 0.2s forwards;
+    cursor: none !important;
+}
+
+.platform h3 {
+  font-size: 1.5em;
+  margin-bottom: 12px;
+  cursor: none !important;
+}
+
+/* Анімація пульсації для кнопки завантаження */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(96, 165, 250, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(96, 165, 250, 0);
+    }
+}
+
+.download-btn {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #04202a;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(96, 165, 250, 0.12);
+  border: none;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  animation: pulse 2s infinite;
+  cursor: none !important;
+}
+
+.download-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+  filter: saturate(1.08) drop-shadow(0 10px 30px rgba(96,165,250,0.06));
+}
+
+/* --- Анімація тексту "друкарська машинка" --- */
+.typewriter {
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    overflow: hidden;
+    cursor: none !important;
+}
+
+.typewriter-cursor {
+    animation: blink 0.75s step-end infinite;
+    display: inline-block;
+    vertical-align: top;
+    font-weight: normal;
+    font-size: 1.2em;
+    color: var(--fg);
+    margin-left: 2px;
+    cursor: none !important;
+}
+
+@keyframes blink {
+    from, to {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* --- Стилі для таблиці проєктів --- */
+.project-table-container {
+    width: 100%;
+    max-width: 980px;
+    padding: 26px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 2;
+    margin-top: 24px;
+    overflow-x: auto; /* Додає горизонтальний скролінг для мобільних пристроїв */
+    cursor: none !important;
+}
+
+.project-table-container h2 {
+    font-size: 1.5em;
+    margin: 0 0 20px;
+    text-align: center;
+    color: var(--fg);
+    cursor: none !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--fg);
+    cursor: none !important;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: none !important;
+}
+
+th {
+    background-color: var(--glass-2);
+    font-weight: 600;
+    color: var(--accent-2);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: none !important;
+}
+
+tr:last-child td {
+    border-bottom: none;
+    cursor: none !important;
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+}
+
+/* --- Responsive design (адаптивність для мобільних пристроїв) --- */
+
+@media (max-width: 720px) {
+  body {
+    padding: 16px;
+  }
+  header {
+    left: 12px;
+    right: 12px;
+    top: 12px;
+  }
+  .platform, .description-box {
+    padding: 20px;
+  }
+  .project-table-container {
+    padding: 20px;
+  }
+}
