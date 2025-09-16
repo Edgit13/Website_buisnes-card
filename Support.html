@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Support.css">
-    <title>Support_helper</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Support</title>
 </head>
 <body>
-    <script src="Support.js"></script>
+    <canvas id="bg-canvas"></canvas>
+
+    <div id="loading-overlay">
+        <div class="loader"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <span>Go to</span>:
+            <a href="index.html" class="home-button">Home</a>
+            <a href="Project.html" class="home-button">Project</a>
+            <a href="ChangeLog.html" class="home-button">Change Log</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="card">
+            <h1>Support</h1>
+            <p class="subtitle">For any questions or support, you can contact us via the following channels:</p>
+            <div class="card-links">
+                <a href="mailto:elmartrom11@gmail.com" class="link">E-mail</a>
+                <a href="https://discord.gg/RKA3NBnsmM" target="_blank" rel="noopener" class="link">Discord</a>
+                <a href="tel:---" class="link">📞 ---</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="index.js"></script>
+    <script src="effects.js"></script>
 </body>
 </html>
