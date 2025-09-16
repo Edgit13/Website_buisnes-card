@@ -112,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Текст для анімації
-    const fullText = "Про'єкт \"Еволюція лабораторного обладнання\" працював над сайтом Eduard, робота над про'єктом 4 дні";
+    // ⁡⁢⁣⁢Текст для анімації⁡
+    const fullText = "Проєкт \"Еволюція лабораторного обладнання\" працював над сайтом Eduard, робота над проєктом 4 дні";
     const typewriterElement = document.getElementById("typewriter-text");
     const typewriterCursor = document.querySelector(".typewriter-cursor");
     let i = 0;
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (i < fullText.length) {
             typewriterElement.innerHTML += fullText.charAt(i);
             i++;
-            setTimeout(typeWriter, 50); // Швидкість друку
+            setTimeout(typeWriter, 100); // Швидкість друку
         } else {
             typewriterCursor.style.animation = 'none'; // Зупиняє блимання курсора після завершення
             typewriterCursor.style.opacity = '1';
