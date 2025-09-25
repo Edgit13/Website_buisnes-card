@@ -4,5 +4,3 @@ This site will be an BuisnesCard
 If you see bug in site please write feedback
 
 Feedback you can find on site
-
-SORRY for problem, on 15th it will work again
