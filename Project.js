@@ -191,11 +191,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    // 4. Оновлення Typewriter Text
-    // --- ПОМИЛКА: ЗАЙВЕ ВИЗНАЧЕННЯ АДМІН-КЛЮЧА ---
-    // const ADMIN_TEXT_KEY = 'admin_index_text'; // Цей ключ визначений нижче
-    
-    // Новий текст береться з адміністративного налаштування або використовується стандартний
     const ADMIN_TEXT_KEY = 'admin_index_text';
     const defaultText = `Проєкт "${latestProject.title}" працював над сайтом Eduard. Дата завершення: ${latestProject.date.split('-').reverse().join('.')}.`;
     // Використовуємо Admin-текст, якщо він був встановлений на Admin.html, інакше генеруємо текст з поточного проєкту.
@@ -244,4 +239,11 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
          typeWriter(); 
     }
+
+    document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.altKey && event.key === 'A') {
+        event.preventDefault(); 
+        window.location.href = 'Admin.html';
+      }
+  });
 });

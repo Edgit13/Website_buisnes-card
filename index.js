@@ -161,13 +161,15 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.classList.add('loaded');
         typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
     }, 3000); // Затримка 3 секунди
-    
-    // --- НОВА ЛОГІКА: Секретне сполучення клавіш для Адмін-панелі (Ctrl + Alt + A) ---
+
     document.addEventListener('keydown', function(event) {
-    // Перевіряємо, чи натиснуті Control (Ctrl), Alt та клавіша 'A'
-    if (event.ctrlKey && event.altKey && event.key === 'A') {
-        event.preventDefault(); 
-        window.location.href = 'Admin.html';
-    }
+        // Перевіряємо, чи натиснуті Control (Ctrl), Alt та клавіша 'A'
+        if (event.ctrlKey && event.altKey && event.key === 'A') {
+            // Щоб уникнути відкриття системних меню
+            event.preventDefault(); 
+            
+            // Перенаправлення на сторінку адміністратора
+            window.location.href = 'Admin.html';
+        }
     });
 });
