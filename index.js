@@ -162,14 +162,23 @@ document.addEventListener("DOMContentLoaded", function() {
         typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
     }, 3000); // Затримка 3 секунди
 
+      // --- Сполучення клавіш для Адмін-панелі ---
+
+
     document.addEventListener('keydown', function(event) {
-        // Перевіряємо, чи натиснуті Control (Ctrl), Alt та клавіша 'A'
-        if (event.ctrlKey && event.altKey && event.key === 'A') {
-            // Щоб уникнути відкриття системних меню
+
+
+        // Перевіряємо, чи натиснуті Control (або Command на Mac), Shift та клавіша 'A'
+
+
+        if (event.ctrlKey && event.shiftKey && event.key === 'A') {
             event.preventDefault(); 
-            
             // Перенаправлення на сторінку адміністратора
             window.location.href = 'Admin.html';
+
+
         }
+
+
     });
 });
