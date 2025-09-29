@@ -4,7 +4,7 @@
   if (typeof window === 'undefined') return;
   const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- Custom Cursor --- (Залишаємо ваш код курсора без змін)
+  // --- Custom Cursor ---
   if (!('ontouchstart' in window) && !prefersReduced) {
     const dot = document.createElement('div');
     const outline = document.createElement('div');
@@ -45,7 +45,7 @@
     });
   }
 
-  // --- Card tilt (Only for index.html) --- (Залишаємо ваш код тілту)
+  // --- Card tilt (Only for index.html) ---
   const card = document.querySelector('.card');
   if (card && !prefersReduced) {
     card.addEventListener('pointermove', e=>{
@@ -63,7 +63,7 @@
     card.addEventListener('pointerleave', ()=>{ card.style.transform=''; card.classList.remove('is-tilting'); const hero = card.querySelector('.hero-effect'); if(hero) hero.style.transform=''; });
   }
 
-  // --- Button ripple --- (Залишаємо ваш код ріпл-ефекту)
+  // --- Button ripple ---
   document.addEventListener('click', e => {
     const btn = e.target.closest('.link, .header-content a');
     if (!btn) return;
@@ -81,7 +81,7 @@
     ripple.addEventListener('animationend', () => ripple.remove());
   });
 
-  // --- Particle canvas (very light) --- (Залишаємо ваш код частинок)
+  // --- Particle canvas (very light) ---
   if (!prefersReduced) {
     const canvas = document.querySelector('#bg-canvas');
     if (!canvas) return;
@@ -89,7 +89,7 @@
     let W, H, particles = [];
     function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
     window.addEventListener('resize', resize); resize();
-    function createParticles(n=45){
+    function createParticles(n=35){
       particles = [];
       for(let i=0;i<n;i++){
         particles.push({
@@ -122,7 +122,7 @@
 
 // --- Функції, що запускаються після завантаження сторінки ---
 document.addEventListener("DOMContentLoaded", function() {
-    // Ефект скролінгу для хедеру (Залишаємо ваш код)
+    // Ефект скролінгу для хедеру
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) { // Зміна класу, коли прокрутка перевищує 50px
@@ -132,32 +132,39 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Текст для анімації (Залишаємо ваш код)
-    const fullText = "Коротка візитка сайту — натисніть 'Open Project' щоб перейти до демонстрації.";
+    // Текст для анімації (Зчитується з Local Storage або використовується стандартний)
+    const ADMIN_TEXT_KEY = 'admin_index_text';
+    const defaultText = "Коротка візитка сайту — натисніть 'Open Project' щоб перейти до демонстрації.";
+    const fullText = localStorage.getItem(ADMIN_TEXT_KEY) || defaultText;
+    
     const typewriterElement = document.getElementById("typewriter-text");
     const typewriterCursor = document.querySelector(".typewriter-cursor");
     let i = 0;
 
     function typeWriter() {
         if (i < fullText.length) {
-            typewriterElement.innerHTML += fullText.charAt(i);
+            if (typewriterElement) {
+                 typewriterElement.innerHTML += fullText.charAt(i);
+            }
             i++;
             setTimeout(typeWriter, 50); // Швидкість друку
         } else {
-            typewriterCursor.style.animation = 'none'; // Зупиняє блимання курсора після завершення
-            typewriterCursor.style.opacity = '1';
+            if (typewriterCursor) {
+                typewriterCursor.style.animation = 'none'; // Зупиняє блимання курсора після завершення
+                typewriterCursor.style.opacity = '1';
+            }
         }
     }
 
-    // Приховати оверлей після 3 секунд, потім запустити анімацію тексту (Залишаємо ваш код)
+    // Приховати оверлей після 3 секунд, потім запустити анімацію тексту
     setTimeout(() => {
         document.body.classList.add('loaded');
         typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
     }, 3000); // Затримка 3 секунди
     
-    // --- Сполучення клавіш для Адмін-панелі ---
+    // --- НОВА ЛОГІКА: Секретне сполучення клавіш для Адмін-панелі (Ctrl + Alt + A) ---
     document.addEventListener('keydown', function(event) {
-        // Перевіряємо, чи натиснуті Control (або Command на Mac), Shift та клавіша 'A'
+        // Перевіряємо, чи натиснуті Control (Ctrl), Alt та клавіша 'A'
         if (event.ctrlKey && event.altKey && event.key === 'A') {
             // Щоб уникнути відкриття системних меню
             event.preventDefault(); 
