@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Project.css"> <title>Admin Tools - Eduard Koch</title>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <header>
+        <div class="header-content">
+            <span>Admin</span>:
+            <a href="index.html">Вийти (Головна)</a>
+            <a href="Project.html">Перейти до Проєкту</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="platform" style="max-width: 600px;">
+            <h3>🔑 Панель Адміністратора</h3>
+            <p style="color: var(--accent);">Тут ви можете керувати проєктами та файлами.</p>
+        </div>
+
+        <div class="description-box" style="max-width: 600px; text-align: left;">
+            <h2>🛠️ Управління файлом Проєкту (PPTX)</h2>
+            <p>
+                Ваш поточний проєкт: **Еволюція лабораторного обладнання.pptx**
+            </p>
+            
+            <form id="pptx-upload-form" action="/upload-pptx" method="POST" enctype="multipart/form-data">
+                <label for="pptx-file" style="display: block; margin-top: 15px; margin-bottom: 5px;">Завантажити нову версію PPTX:</label>
+                <input type="file" id="pptx-file" name="pptx" accept=".pptx" required 
+                       style="padding: 10px; border: 1px solid var(--muted); background: var(--glass-2); color: var(--fg); border-radius: 8px; width: 100%; margin-bottom: 15px;">
+                
+                <button type="submit" class="download-btn" style="width: 100%; animation: none;">
+                    Оновити файл Проєкту
+                </button>
+                <p style="font-size: 0.8em; color: var(--muted); margin-top: 10px;">
+                    *Після завантаження новий файл замінить поточний, і посилання на сторінці Проєкту буде оновлено.
+                </p>
+            </form>
+        </div>
+    </main>
+    
+    <script src="Project.js"></script> 
+</body>
+</html>

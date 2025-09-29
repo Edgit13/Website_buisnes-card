@@ -4,7 +4,7 @@
   if (typeof window === 'undefined') return;
   const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // --- Custom Cursor ---
+  // --- Custom Cursor --- (Залишаємо ваш код курсора без змін)
   if (!('ontouchstart' in window) && !prefersReduced) {
     const dot = document.createElement('div');
     const outline = document.createElement('div');
@@ -45,7 +45,7 @@
     });
   }
 
-  // --- Card tilt (Only for index.html) ---
+  // --- Card tilt (Only for index.html) --- (Залишаємо ваш код тілту)
   const card = document.querySelector('.card');
   if (card && !prefersReduced) {
     card.addEventListener('pointermove', e=>{
@@ -63,7 +63,7 @@
     card.addEventListener('pointerleave', ()=>{ card.style.transform=''; card.classList.remove('is-tilting'); const hero = card.querySelector('.hero-effect'); if(hero) hero.style.transform=''; });
   }
 
-  // --- Button ripple ---
+  // --- Button ripple --- (Залишаємо ваш код ріпл-ефекту)
   document.addEventListener('click', e => {
     const btn = e.target.closest('.link, .header-content a');
     if (!btn) return;
@@ -81,7 +81,7 @@
     ripple.addEventListener('animationend', () => ripple.remove());
   });
 
-  // --- Particle canvas (very light) ---
+  // --- Particle canvas (very light) --- (Залишаємо ваш код частинок)
   if (!prefersReduced) {
     const canvas = document.querySelector('#bg-canvas');
     if (!canvas) return;
@@ -89,7 +89,7 @@
     let W, H, particles = [];
     function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
     window.addEventListener('resize', resize); resize();
-    function createParticles(n=35){
+    function createParticles(n=45){
       particles = [];
       for(let i=0;i<n;i++){
         particles.push({
@@ -122,7 +122,7 @@
 
 // --- Функції, що запускаються після завантаження сторінки ---
 document.addEventListener("DOMContentLoaded", function() {
-    // Ефект скролінгу для хедеру
+    // Ефект скролінгу для хедеру (Залишаємо ваш код)
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) { // Зміна класу, коли прокрутка перевищує 50px
@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Текст для анімації
+    // Текст для анімації (Залишаємо ваш код)
     const fullText = "Коротка візитка сайту — натисніть 'Open Project' щоб перейти до демонстрації.";
     const typewriterElement = document.getElementById("typewriter-text");
     const typewriterCursor = document.querySelector(".typewriter-cursor");
@@ -149,9 +149,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Приховати оверлей після 3 секунд, потім запустити анімацію тексту
+    // Приховати оверлей після 3 секунд, потім запустити анімацію тексту (Залишаємо ваш код)
     setTimeout(() => {
         document.body.classList.add('loaded');
         typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
     }, 3000); // Затримка 3 секунди
+    
+    // --- Сполучення клавіш для Адмін-панелі ---
+    document.addEventListener('keydown', function(event) {
+        // Перевіряємо, чи натиснуті Control (або Command на Mac), Shift та клавіша 'A'
+        if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+            // Щоб уникнути відкриття системних меню
+            event.preventDefault(); 
+            
+            // Перенаправлення на сторінку адміністратора
+            window.location.href = 'Admin.html';
+        }
+    });
 });
