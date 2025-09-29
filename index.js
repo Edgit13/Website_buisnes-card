@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- Сполучення клавіш для Адмін-панелі ---
     document.addEventListener('keydown', function(event) {
         // Перевіряємо, чи натиснуті Control (або Command на Mac), Shift та клавіша 'A'
-        if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+        if (event.ctrlKey && event.altKey && event.key === 'A') {
             // Щоб уникнути відкриття системних меню
             event.preventDefault(); 
             
