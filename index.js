@@ -164,13 +164,10 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // --- НОВА ЛОГІКА: Секретне сполучення клавіш для Адмін-панелі (Ctrl + Alt + A) ---
     document.addEventListener('keydown', function(event) {
-        // Перевіряємо, чи натиснуті Control (Ctrl), Alt та клавіша 'A'
-        if (event.ctrlKey && event.altKey && event.key === 'A') {
-            // Щоб уникнути відкриття системних меню
-            event.preventDefault(); 
-            
-            // Перенаправлення на сторінку адміністратора
-            window.location.href = 'Admin.html';
-        }
+    // Перевіряємо, чи натиснуті Control (Ctrl), Alt та клавіша 'A'
+    if (event.ctrlKey && event.altKey && event.key === 'A') {
+        event.preventDefault(); 
+        window.location.href = 'Admin.html';
+    }
     });
 });
