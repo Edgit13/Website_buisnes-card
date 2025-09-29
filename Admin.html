@@ -20,32 +20,52 @@
     </header>
 
     <main>
-        <div class="platform" style="max-width: 600px;">
+        <div class="platform" style="max-width: 800px;">
             <h3>🔑 Панель Адміністратора</h3>
-            <p style="color: var(--accent);">Тут ви можете керувати проєктами та файлами.</p>
+            <p style="color: var(--accent);">
+                Використовуйте ці інструменти для швидкого оновлення контенту статичних сторінок.
+                Усі зміни зберігаються у вашому браузері (Local Storage).
+            </p>
         </div>
 
-        <div class="description-box" style="max-width: 600px; text-align: left;">
-            <h2>🛠️ Управління файлом Проєкту (PPTX)</h2>
-            <p>
-                Ваш поточний проєкт: **Еволюція лабораторного обладнання.pptx**
+        <div class="description-box" style="max-width: 800px; text-align: left;">
+            <h2>📝 Керування текстом на Index.html</h2>
+            <p style="color: var(--muted);">
+                Оновіть текст, який відображається в анімації друкарської машинки на головній сторінці.
             </p>
-            
-            <form id="pptx-upload-form" action="/upload-pptx" method="POST" enctype="multipart/form-data">
-                <label for="pptx-file" style="display: block; margin-top: 15px; margin-bottom: 5px;">Завантажити нову версію PPTX:</label>
-                <input type="file" id="pptx-file" name="pptx" accept=".pptx" required 
-                       style="padding: 10px; border: 1px solid var(--muted); background: var(--glass-2); color: var(--fg); border-radius: 8px; width: 100%; margin-bottom: 15px;">
+            <form id="index-text-form" onsubmit="saveIndexText(event)">
+                <label for="index-text-input" style="display: block; margin-top: 15px; margin-bottom: 5px;">Новий текст візитки:</label>
+                <textarea id="index-text-input" rows="3" placeholder="Наприклад: Коротка візитка сайту – натисніть 'Open Project'..."
+                          style="padding: 10px; border: 1px solid var(--muted); background: var(--glass-2); color: var(--fg); border-radius: 8px; width: 100%; margin-bottom: 15px;"></textarea>
                 
                 <button type="submit" class="download-btn" style="width: 100%; animation: none;">
-                    Оновити файл Проєкту
+                    Оновити текст візитки
                 </button>
-                <p style="font-size: 0.8em; color: var(--muted); margin-top: 10px;">
-                    *Після завантаження новий файл замінить поточний, і посилання на сторінці Проєкту буде оновлено.
-                </p>
             </form>
         </div>
+        
+        <div class="description-box" style="max-width: 800px; text-align: left;">
+            <h2>🔗 Оновлення Поточного PPTX (Ручне оновлення)</h2>
+            <p style="color: var(--muted);">
+                Ви не можете завантажити файл, але можете швидко змінити посилання на нього (після завантаження нового файлу через Git або на OneDrive/Google Drive).
+            </p>
+            <form id="pptx-link-form" onsubmit="savePptxLink(event)">
+                <label for="pptx-link-input" style="display: block; margin-top: 15px; margin-bottom: 5px;">Нове посилання на онлайн-версію:</label>
+                <input type="url" id="pptx-link-input" placeholder="Наприклад: https://onedrive.live.com/view/..."
+                       style="padding: 10px; border: 1px solid var(--muted); background: var(--glass-2); color: var(--fg); border-radius: 8px; width: 100%; margin-bottom: 15px;">
+                
+                <button type="submit" class="download-btn" style="width: 100%; animation: none; background: var(--accent-2);">
+                    Оновити Онлайн-Посилання
+                </button>
+            </form>
+        </div>
+        
+        <div id="admin-message" style="max-width: 800px; margin: 20px auto; padding: 15px; background: rgba(0, 255, 0, 0.1); border-radius: var(--radius); display: none; color: #5eead4;">
+            Успішно збережено!
+        </div>
+
     </main>
     
-    <script src="Project.js"></script> 
+    <script src="Admin.js"></script> 
 </body>
 </html>

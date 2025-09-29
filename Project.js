@@ -38,6 +38,7 @@
       outline.style.opacity = 0;
     });
 
+    // Show on window focus
     window.addEventListener('focus', () => {
       dot.style.opacity = 1;
       outline.style.opacity = 1;
@@ -58,9 +59,11 @@
     
     btn.appendChild(ripple);
     
+    // Remove ripple element after animation
     ripple.addEventListener('animationend', () => ripple.remove());
   });
-  
+
+
   // --- Particle canvas (very light) ---
   if (!prefersReduced) {
     const canvas = document.querySelector('#bg-canvas');
@@ -69,7 +72,7 @@
     let W, H, particles = [];
     function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
     window.addEventListener('resize', resize); resize();
-    function createParticles(n=35){
+    function createParticles(n=45){
       particles = [];
       for(let i=0;i<n;i++){
         particles.push({
@@ -100,9 +103,128 @@
   }
 })();
 
-// --- Функції, що запускаються після завантаження сторінки ---
+// --- Функції, що запускаються після завантаження сторінки та ЛОГІКА ПРОЄКТІВ ---
 document.addEventListener("DOMContentLoaded", function() {
-    // Ефект скролінгу для хедеру
+    
+    // 1. Сортуємо проєкти за датою (від новіших до старіших)
+    // Перевіряємо, чи існує projectFiles (з файлу projectsData.js)
+    if (typeof projectFiles === 'undefined' || projectFiles.length === 0) {
+        console.error("Помилка: Не знайдено даних про проєкти. Перевірте projectsData.js");
+        return;
+    }
+
+    const sortedProjects = [...projectFiles].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
+
+    const latestProject = sortedProjects[0]; // Найновіший проєкт
+
+    // --- ДОДАНО: Перевірка адмін-посилання ---
+    const ADMIN_LINK_KEY = 'admin_pptx_link';
+    const adminLink = localStorage.getItem(ADMIN_LINK_KEY);
+    if (adminLink) {
+        latestProject.onlineLink = adminLink; // Перезаписуємо онлайн-посилання, якщо адміністратор його оновив
+    }
+
+    // 2. ВІДОБРАЖЕННЯ НАЙНОВІШОГО ПРОЄКТУ
+    
+    // a) Завантажити файл
+    const downloadArea = document.getElementById('latest-project-download-area');
+    if (downloadArea) {
+        document.getElementById('latest-project-title').textContent = latestProject.title;
+        const downloadLink = document.createElement('a');
+        downloadLink.href = latestProject.filename;
+        downloadLink.download = latestProject.filename;
+        downloadLink.className = 'download-btn';
+        downloadLink.textContent = 'Завантажити зараз';
+        downloadArea.appendChild(downloadLink);
+    }
+    
+    // b) Онлайн-посилання (якщо є)
+    const onlineArea = document.getElementById('latest-project-online-area');
+    if (onlineArea && latestProject.onlineLink) {
+        document.getElementById('latest-project-online-title').textContent = latestProject.title;
+        const onlineLink = document.createElement('a');
+        onlineLink.href = latestProject.onlineLink;
+        onlineLink.target = '_blank';
+        onlineLink.rel = 'noopener';
+        onlineLink.className = 'download-btn';
+        onlineLink.textContent = 'У Локальному';
+        onlineArea.appendChild(onlineLink);
+    } else if (onlineArea) {
+        // Якщо онлайн-посилання немає, приховуємо цей блок
+        onlineArea.style.display = 'none';
+    }
+
+
+    // 3. ВІДОБРАЖЕННЯ ПРОЄКТІВ У ТАБЛИЦІ
+    const tableBody = document.getElementById('project-table-body');
+    if (tableBody) {
+        sortedProjects.forEach(project => {
+            const row = tableBody.insertRow();
+
+            // Назва проєкту (додаємо позначку "Поточний")
+            const titleCell = row.insertCell();
+            titleCell.textContent = project.title;
+            if (project === latestProject) {
+                titleCell.innerHTML += ' <span style="font-size: 0.8em; color: var(--accent);"> (Поточний)</span>';
+            }
+
+            // Автор
+            row.insertCell().textContent = project.author;
+
+            // Дата
+            row.insertCell().textContent = project.date.split('-').reverse().join('.'); // Формат ДД.ММ.РРРР
+
+            // Посилання на файл
+            const fileCell = row.insertCell();
+            const fileLink = document.createElement('a');
+            fileLink.href = project.filename;
+            fileLink.download = project.filename;
+            fileLink.textContent = 'Завантажити';
+            // Використовуємо .download-btn-small для стилю
+            fileLink.className = 'download-btn'; 
+            fileLink.style.padding = '5px 10px';
+            fileLink.style.fontSize = '0.9em';
+            fileCell.appendChild(fileLink);
+        });
+    }
+
+
+    // 4. Оновлення Typewriter Text
+    // --- ПОМИЛКА: ЗАЙВЕ ВИЗНАЧЕННЯ АДМІН-КЛЮЧА ---
+    // const ADMIN_TEXT_KEY = 'admin_index_text'; // Цей ключ визначений нижче
+    
+    // Новий текст береться з адміністративного налаштування або використовується стандартний
+    const ADMIN_TEXT_KEY = 'admin_index_text';
+    const defaultText = `Проєкт "${latestProject.title}" працював над сайтом Eduard. Дата завершення: ${latestProject.date.split('-').reverse().join('.')}.`;
+    // Використовуємо Admin-текст, якщо він був встановлений на Admin.html, інакше генеруємо текст з поточного проєкту.
+    const fullText = localStorage.getItem(ADMIN_TEXT_KEY) || defaultText;
+    
+    // --- ВИПРАВЛЕННЯ: Елементи анімації друкарської машинки ПОВИННІ БУТИ ВИЗНАЧЕНІ ТУТ ---
+    const typewriterElement = document.getElementById("typewriter-text");
+    const typewriterCursor = document.querySelector(".typewriter-cursor");
+    // ---------------------------------------------------------------------------------
+    
+    let i = 0;
+
+    function typeWriter() {
+        if (i < fullText.length) {
+            // Перевірка, чи елементи були знайдені (на випадок, якщо їх немає на сторінці)
+            if (typewriterElement) {
+                typewriterElement.innerHTML += fullText.charAt(i);
+            }
+            i++;
+            setTimeout(typeWriter, 50); // Швидкість друку
+        } else {
+            if (typewriterCursor) {
+                typewriterCursor.style.animation = 'none'; // Зупиняє блимання курсора після завершення
+                typewriterCursor.style.opacity = '1';
+            }
+        }
+    }
+
+    // 5. Ефект скролінгу для хедеру
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) { // Зміна класу, коли прокрутка перевищує 50px
@@ -112,89 +234,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // ⁡⁢⁣⁢Текст для анімації⁡
-    const fullText = "Проєкт \"Еволюція лабораторного обладнання\" працював над сайтом Eduard, робота над проєктом 4 дні";
-    const typewriterElement = document.getElementById("typewriter-text");
-    const typewriterCursor = document.querySelector(".typewriter-cursor");
-    let i = 0;
-
-    function typeWriter() {
-        if (i < fullText.length) {
-            typewriterElement.innerHTML += fullText.charAt(i);
-            i++;
-            setTimeout(typeWriter, 100); // Швидкість друку
-        } else {
-            typewriterCursor.style.animation = 'none'; // Зупиняє блимання курсора після завершення
-            typewriterCursor.style.opacity = '1';
-        }
-    }
-
-    // Приховати оверлей після 3 секунд, потім запустити анімацію тексту
-    setTimeout(() => {
-        document.body.classList.add('loaded');
-        typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
-    }, 3000); // Затримка 3 секунди
-
-    // Language translations (якщо потрібно)
-    const translations = {
-        uk: {
-            intro: "Коротка візитка сайту — натисніть 'Open Project' щоб перейти до демонстрації.",
-            share: "Поділитися",
-            contact: "Контакти"
-        },
-        en: {
-            intro: "Brief site card - click 'Open Project' to go to the demonstration.",
-            share: "Share",
-            contact: "Contact"
-        }
-    };
-
-    // Quick actions (якщо потрібно)
-    document.querySelectorAll('.action-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const action = btn.dataset.action;
-            switch(action) {
-                case 'share':
-                    if (navigator.share) {
-                        navigator.share({
-                            title: 'Eduard Koch - Project',
-                            url: window.location.href
-                        });
-                    }
-                    break;
-                case 'contact':
-                    const tel = document.querySelector('.contact-phone')?.href;
-                    if (tel) window.location.href = tel;
-                    break;
-            }
-        });
-    });
-
-    // openLocalPptx function (якщо потрібно)
-    function openLocalPptx(filename) {
-        if (location.protocol === 'file:') {
-            const folderUrl = location.href.replace(/[^\/\\]+$/, '');
-            const fileUrl = folderUrl + encodeURIComponent(filename);
-            window.location.href = fileUrl;
-            return;
-        }
-
-        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-            window.open(encodeURI(filename), '_blank');
-            return;
-        }
-
-        try {
-            const pageUrl = (location.origin && location.origin !== 'null') ? location.origin + '/' + encodeURIComponent(filename) : encodeURIComponent(filename);
-            const msProtocol = 'ms-powerpoint:ofe|u|' + pageUrl;
-            const a = document.createElement('a');
-            a.href = msProtocol;
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => window.open(encodeURI(filename), '_blank'), 600);
-        } catch (e) {
-            window.open(encodeURI(filename), '_blank');
-        }
+    // 6. Приховати оверлей після 3 секунд, потім запустити анімацію тексту
+    const overlay = document.getElementById('loading-overlay');
+    if (overlay) {
+        setTimeout(() => {
+            document.body.classList.add('loaded');
+            typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
+        }, 3000); // Затримка 3 секунди
+    } else {
+         typeWriter(); 
     }
 });

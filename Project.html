@@ -27,16 +27,14 @@
     </header>
 
     <main>
-        <div class="platform">
-            <h3>Завантажити Проєкт</h3>
-            <a href="Еволюція лабораторного обладнання.pptx" download class="download-btn">Завантажити зараз</a>
-        </div>
-        <div class="platform">
-            <h3>Open the Project</h3>
-            <a href="https://1drv.ms/p/c/497a707dd0bbc8c2/ERm8WXSfe1NFttRX4gxPInABE2WLJ0rEXujaJq91bV66WA?e=rOficn" target="_blank" rel="noopener" class="download-btn">У Локальному</a>
-        </div>
+        <div class="platform" id="latest-project-download-area">
+            <h3>Завантажити Поточний Проєкт: <span id="latest-project-title">...</span></h3>
+            </div>
 
-        <!-- const fullText = "Проєкт \"Еволюція лабораторного обладнання\" працював над сайтом Eduard, робота над проєктом 4 дні"; -->
+        <div class="platform" id="latest-project-online-area">
+            <h3>Open the Project Online: <span id="latest-project-online-title">...</span></h3>
+            </div>
+
         <div class="description-box">
             <div class="typewriter">
                 <p id="typewriter-text"></p>
@@ -45,31 +43,23 @@
         </div>
 
         <div class="project-table-container">
-            <h2>Всі Проєкти</h2>
+            <h2>Всі Проєкти (Архів)</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Назва проєкту</th>
                         <th>Автор</th>
                         <th>Дата завершення</th>
+                        <th>Файл</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Еволюція лабораторного обладнання</td>
-                        <td>Eduard</td>
-                        <td>10.09.2025</td>
-                    </tr>
-                    <tr>
-                        <td>Розробка сайту-портфоліо</td>
-                        <td>Eduard</td>
-                        <td>10-15.09.2025</td>
-                    </tr>
-                </tbody>
+                <tbody id="project-table-body">
+                    </tbody>
             </table>
         </div>
     </main>
 
-    <script src="Project.js"></script>
+    <script src="projectsData.js"></script>
+    <script src="Project.js"></script> 
 </body>
 </html>
