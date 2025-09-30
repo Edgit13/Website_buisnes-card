@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Перевіряємо, чи натиснуті Control (або Command на Mac), Shift та клавіша 'A'
 
 
-        if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+        if (event.ctrlKey && event.shiftKey && event.key === '}') {
             event.preventDefault(); 
             // Перенаправлення на сторінку адміністратора
             window.location.href = 'Admin.html';
