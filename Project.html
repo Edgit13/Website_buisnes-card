@@ -27,35 +27,62 @@
     </header>
 
     <main>
-        <div class="platform" id="latest-project-download-area">
-            <h3>Завантажити Поточний Проєкт: <span id="latest-project-title">...</span></h3>
+        <div class="content-layout">
+            <!-- Ліва колонка -->
+            <div class="left-column">
+                <div class="platform" id="latest-project-download-area">
+                    <h3>Завантажити Поточний Проєкт: <span id="latest-project-title">...</span></h3>
+                </div>
+
+                <div class="platform" id="latest-project-online-area">
+                    <h3>Open the Project Online: <span id="latest-project-online-title">...</span></h3>
+                </div>
+
+                <div class="description-box">
+                    <div class="typewriter">
+                        <p id="typewriter-text"></p>
+                        <span class="typewriter-cursor">|</span>
+                    </div>
+                </div>
+
+                <div class="project-table-container">
+                    <h2>Всі Проєкти (Архів)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Назва проєкту</th>
+                                <th>Автор</th>
+                                <th>Дата завершення</th>
+                                <th>Файл</th>
+                            </tr>
+                        </thead>
+                        <tbody id="project-table-body">
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-        <div class="platform" id="latest-project-online-area">
-            <h3>Open the Project Online: <span id="latest-project-online-title">...</span></h3>
+            <!-- Права колонка з NA-Diagnostic -->
+            <div class="right-column">
+                <div class="NA_Box">
+                    <h1><strong>NA-Diagnostic.</strong></h1>
+                    
+                    <div class="vote-section">
+                        <h3>Vote</h3>
+                    </div>
+                    
+                    <a href="NAD.html" class="download-btn visit-btn">Visit</a>
+                    
+                    <div class="download-more">
+                        <h3>Download More</h3>
+                        <a href="#" class="download-link">Additional Resources</a>
+                    </div>
+                    
+                    <div class="description-text">
+                        <p>При чому "Розвиток та лабораторність оновлюваних" приведені або системи областей, робочі або про-системи.</p>
+                    </div>
+                </div>
             </div>
-
-        <div class="description-box">
-            <div class="typewriter">
-                <p id="typewriter-text"></p>
-                <span class="typewriter-cursor">|</span>
-            </div>
-        </div>
-
-        <div class="project-table-container">
-            <h2>Всі Проєкти (Архів)</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Назва проєкту</th>
-                        <th>Автор</th>
-                        <th>Дата завершення</th>
-                        <th>Файл</th>
-                    </tr>
-                </thead>
-                <tbody id="project-table-body">
-                    </tbody>
-            </table>
         </div>
     </main>
 

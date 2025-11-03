@@ -59,10 +59,8 @@
     
     btn.appendChild(ripple);
     
-    // Remove ripple element after animation
     ripple.addEventListener('animationend', () => ripple.remove());
   });
-
 
   // --- Particle canvas (very light) ---
   if (!prefersReduced) {
@@ -107,7 +105,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     
     // 1. Сортуємо проєкти за датою (від новіших до старіших)
-    // Перевіряємо, чи існує projectFiles (з файлу projectsData.js)
     if (typeof projectFiles === 'undefined' || projectFiles.length === 0) {
         console.error("Помилка: Не знайдено даних про проєкти. Перевірте projectsData.js");
         return;
@@ -117,13 +114,13 @@ document.addEventListener("DOMContentLoaded", function() {
         return new Date(b.date) - new Date(a.date);
     });
 
-    const latestProject = sortedProjects[0]; // Найновіший проєкт
+    const latestProject = sortedProjects[0];
 
-    // --- ДОДАНО: Перевірка адмін-посилання ---
+    // --- Перевірка адмін-посилання ---
     const ADMIN_LINK_KEY = 'admin_pptx_link';
     const adminLink = localStorage.getItem(ADMIN_LINK_KEY);
     if (adminLink) {
-        latestProject.onlineLink = adminLink; // Перезаписуємо онлайн-посилання, якщо адміністратор його оновив
+        latestProject.onlineLink = adminLink;
     }
 
     // 2. ВІДОБРАЖЕННЯ НАЙНОВІШОГО ПРОЄКТУ
@@ -152,10 +149,8 @@ document.addEventListener("DOMContentLoaded", function() {
         onlineLink.textContent = 'У Локальному';
         onlineArea.appendChild(onlineLink);
     } else if (onlineArea) {
-        // Якщо онлайн-посилання немає, приховуємо цей блок
         onlineArea.style.display = 'none';
     }
-
 
     // 3. ВІДОБРАЖЕННЯ ПРОЄКТІВ У ТАБЛИЦІ
     const tableBody = document.getElementById('project-table-body');
@@ -174,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
             row.insertCell().textContent = project.author;
 
             // Дата
-            row.insertCell().textContent = project.date.split('-').reverse().join('.'); // Формат ДД.ММ.РРРР
+            row.insertCell().textContent = project.date.split('-').reverse().join('.');
 
             // Посилання на файл
             const fileCell = row.insertCell();
@@ -182,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function() {
             fileLink.href = project.filename;
             fileLink.download = project.filename;
             fileLink.textContent = 'Завантажити';
-            // Використовуємо .download-btn-small для стилю
             fileLink.className = 'download-btn'; 
             fileLink.style.padding = '5px 10px';
             fileLink.style.fontSize = '0.9em';
@@ -190,30 +184,25 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-
     const ADMIN_TEXT_KEY = 'admin_index_text';
     const defaultText = `Проєкт "${latestProject.title}" працював над сайтом Eduard. Дата завершення: ${latestProject.date.split('-').reverse().join('.')}.`;
-    // Використовуємо Admin-текст, якщо він був встановлений на Admin.html, інакше генеруємо текст з поточного проєкту.
     const fullText = localStorage.getItem(ADMIN_TEXT_KEY) || defaultText;
     
-    // --- ВИПРАВЛЕННЯ: Елементи анімації друкарської машинки ПОВИННІ БУТИ ВИЗНАЧЕНІ ТУТ ---
     const typewriterElement = document.getElementById("typewriter-text");
     const typewriterCursor = document.querySelector(".typewriter-cursor");
-    // ---------------------------------------------------------------------------------
     
     let i = 0;
 
     function typeWriter() {
         if (i < fullText.length) {
-            // Перевірка, чи елементи були знайдені (на випадок, якщо їх немає на сторінці)
             if (typewriterElement) {
                 typewriterElement.innerHTML += fullText.charAt(i);
             }
             i++;
-            setTimeout(typeWriter, 50); // Швидкість друку
+            setTimeout(typeWriter, 50);
         } else {
             if (typewriterCursor) {
-                typewriterCursor.style.animation = 'none'; // Зупиняє блимання курсора після завершення
+                typewriterCursor.style.animation = 'none';
                 typewriterCursor.style.opacity = '1';
             }
         }
@@ -222,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // 5. Ефект скролінгу для хедеру
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) { // Зміна класу, коли прокрутка перевищує 50px
+        if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
@@ -234,16 +223,236 @@ document.addEventListener("DOMContentLoaded", function() {
     if (overlay) {
         setTimeout(() => {
             document.body.classList.add('loaded');
-            typeWriter(); // Запускаємо анімацію після зникнення завантажувального екрану
-        }, 3000); // Затримка 3 секунди
+            typeWriter();
+        }, 3000);
     } else {
          typeWriter(); 
     }
 
-    document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.altKey && event.key === 'A') {
-        event.preventDefault(); 
-        window.location.href = 'Admin.html';
-      }
-  });
+    // --- СЕКРЕТНА АДМІНКА ---
+    let keySequence = [];
+    const secretCode = '1337';
+    
+    document.addEventListener('keydown', (e) => {
+        keySequence.push(e.key);
+        
+        if (keySequence.length > 4) {
+            keySequence.shift();
+        }
+        
+        if (keySequence.join('') === secretCode) {
+            openAdminPanel();
+            keySequence = [];
+        }
+        
+        // Альтернативні комбінації
+        if ((e.ctrlKey && e.shiftKey && e.key === 'A') || (e.ctrlKey && e.altKey && e.key === 'A')) {
+            e.preventDefault();
+            openAdminPanel();
+        }
+    });
+
+    function openAdminPanel() {
+        const adminPanel = document.createElement('div');
+        adminPanel.id = 'admin-panel';
+        adminPanel.innerHTML = `
+            <div class="admin-overlay">
+                <div class="admin-content">
+                    <div class="admin-header">
+                        <h2>🔐 Адмін Панель</h2>
+                        <button class="admin-close">&times;</button>
+                    </div>
+                    <div class="admin-body">
+                        <div class="admin-section">
+                            <h3>Швидкі дії</h3>
+                            <button class="admin-btn" onclick="location.href='index.html'">🏠 Головна</button>
+                            <button class="admin-btn" onclick="location.href='ChangeLog.html'">📋 Чейнджлог</button>
+                            <button class="admin-btn" onclick="location.href='Support.html'">🛟 Support</button>
+                            <button class="admin-btn" onclick="location.href='Admin.html'">⚙️ Admin Tools</button>
+                        </div>
+                        <div class="admin-section">
+                            <h3>Інформація про проєкт</h3>
+                            <p><strong>Сторінка:</strong> Project</p>
+                            <p><strong>Кількість проєктів:</strong> ${sortedProjects.length}</p>
+                            <p><strong>Останнє оновлення:</strong> ${new Date().toLocaleDateString()}</p>
+                        </div>
+                        <div class="admin-section">
+                            <h3>Інструменти</h3>
+                            <button class="admin-btn" onclick="exportProjects()">📤 Експорт проєктів</button>
+                            <button class="admin-btn danger" onclick="clearLocalStorage()">🧹 Очистити кеш</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(adminPanel);
+        
+        adminPanel.querySelector('.admin-close').addEventListener('click', () => {
+            document.body.removeChild(adminPanel);
+        });
+        
+        adminPanel.querySelector('.admin-overlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                document.body.removeChild(adminPanel);
+            }
+        });
+    }
+
+    // Функція для експорту проєктів
+    window.exportProjects = function() {
+        const dataStr = JSON.stringify(sortedProjects, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = 'projects_export.json';
+        link.click();
+        
+        alert('Проєкти експортовано у JSON файл!');
+    };
+
+    window.clearLocalStorage = function() {
+        localStorage.clear();
+        alert('Кеш очищено!');
+        location.reload();
+    };
 });
+
+// Додаємо стилі для адмін панелі
+const adminStyles = `
+    #admin-panel {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10000;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .admin-overlay {
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: adminFadeIn 0.3s ease;
+    }
+    
+    @keyframes adminFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .admin-content {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        border-radius: 15px;
+        padding: 0;
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        animation: adminSlideIn 0.3s ease;
+    }
+    
+    @keyframes adminSlideIn {
+        from { transform: translateY(-50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+    
+    .admin-header {
+        background: rgba(96, 165, 250, 0.1);
+        padding: 20px;
+        border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .admin-header h2 {
+        margin: 0;
+        color: #60a5fa;
+        font-size: 1.5em;
+    }
+    
+    .admin-close {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .admin-close:hover {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+    }
+    
+    .admin-body {
+        padding: 20px;
+    }
+    
+    .admin-section {
+        margin-bottom: 25px;
+    }
+    
+    .admin-section h3 {
+        color: #5eead4;
+        margin-bottom: 15px;
+        font-size: 1.1em;
+        border-bottom: 1px solid rgba(94, 234, 212, 0.3);
+        padding-bottom: 5px;
+    }
+    
+    .admin-btn {
+        background: rgba(96, 165, 250, 0.1);
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        color: #e6eef8;
+        padding: 10px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin: 5px;
+        transition: all 0.3s ease;
+        font-size: 0.9em;
+        display: inline-block;
+    }
+    
+    .admin-btn:hover {
+        background: rgba(96, 165, 250, 0.2);
+        border-color: #60a5fa;
+        transform: translateY(-2px);
+    }
+    
+    .admin-btn.danger {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+    }
+    
+    .admin-btn.danger:hover {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: #ef4444;
+    }
+    
+    .admin-section p {
+        color: #94a3b8;
+        margin: 8px 0;
+        font-size: 0.9em;
+    }
+`;
+
+const styleSheet = document.createElement('style');
+styleSheet.textContent = adminStyles;
+document.head.appendChild(styleSheet);
